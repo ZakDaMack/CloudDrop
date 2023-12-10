@@ -31,6 +31,6 @@ RUN dotnet publish "CloudDrop.csproj" -c Release -o /app/publish /p:UseAppHost=f
 
 FROM base AS final
 WORKDIR /app
-# COPY --from=react-build   
+COPY --from=react-build /app/build .
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "CloudDrop.dll"]
