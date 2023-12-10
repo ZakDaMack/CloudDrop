@@ -1,17 +1,34 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../AuthContext";
 
-function SimpleDialog(props) {
-    const { onClose, selectedValue, open } = props;
-  
-    const handleClose = () => onClose(selectedValue);
-    const handleListItemClick = (value) => onClose(value);
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import Box from "@mui/material/Box";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import { styled } from '@mui/material/styles';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+
+export default function AuthDialog(props) {
+    const { auth, setAuth } = useContext(AuthContext);
+
+    const [showPassword, setShowPassword] = useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const [form, setForm] = useState({username: '', password: ''});
+    const handleSubmit = () => setAuth({ ...auth, user: form });
   
     return (
-      <Dialog onClose={handleClose} open={open}>
-        <DialogTitle>Set backup account</DialogTitle>
+      <Dialog open={auth.authEnabled && !auth.user} maxWidth="xs">
         <Box
           sx={{
-            marginTop: 8,
+            m: 2,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -23,15 +40,18 @@ function SimpleDialog(props) {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+
+          <Box sx={{ m: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
+              value={form.username}
+              onChange={(e) => setForm({...form, username: e.target.value})}
               autoFocus
             />
             <TextField
@@ -40,67 +60,34 @@ function SimpleDialog(props) {
               fullWidth
               name="password"
               label="Password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               id="password"
               autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              value={form.password}
+              onChange={(e) => setForm({...form, password: e.target.value})}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                </IconButton>
+              </InputAdornment>
+              }}
             />
             <Button
-              type="submit"
               fullWidth
+              size="large"
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 2 }}
+              onClick={handleSubmit}
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Dialog>
-    );
-  }
-  
-  export default function SimpleDialogDemo() {
-    const [open, setOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState("");
-  
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-  
-    const handleClose = (value) => {
-      setOpen(false);
-      setSelectedValue(value);
-    };
-  
-    return (
-      <div>
-        <Typography variant="subtitle1" component="div">
-          Selected: {selectedValue}
-        </Typography>
-        <br />
-        <Button variant="outlined" onClick={handleClickOpen}>
-          Open simple dialog
-        </Button>
-        <SimpleDialog
-          selectedValue={selectedValue}
-          open={open}
-          onClose={handleClose}
-        />
-      </div>
     );
   }

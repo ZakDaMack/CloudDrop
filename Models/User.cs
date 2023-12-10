@@ -7,10 +7,10 @@ namespace CloudDrop.Models
         // PROPERTIES
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string TokenHash { get; set; }
-        public string DirectoryLocation { get; set; }
-        public string AcceptedFileTypes { get; set; }
+        public string? Name { get; set; }
+        public string? TokenHash { get; set; }
+        public string? DirectoryLocation { get; set; }
+        public string? AcceptedFileTypes { get; set; }
 
         //public User(string name, string tokenHash, string directoryLocation, string[] acceptedFileTypes)
         //{

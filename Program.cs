@@ -41,19 +41,38 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
+// app.UseAuthorization();
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+              name: "default",
+              pattern: "{controller}/{action=Index}/{id?}");
+});
+// app.MapControllers();
 
 // prep react app
-app.UseSpa(spa => {        
-    spa.Options.SourcePath = "Client";        
-    if (app.Environment.IsDevelopment())             
-        spa.UseReactDevelopmentServer(npmScript: "start");
-});
+app.MapWhen(
+    ctx => !ctx.Request.Path.StartsWithSegments("/api"),
+    appBuilder => {
+        app.UseSpa(spa => {        
+            spa.Options.SourcePath = "Client";        
+            if (app.Environment.IsDevelopment())             
+                spa.UseReactDevelopmentServer(npmScript: "start");
+        });
+    }
+);
+
+
+
+// app.UseRouting();
+// app.UseEndpoints(endpoints => {
+//     endpoints.MapControllers();
+// });
 
 // add the user auth
-IServiceScopeFactory serviceScopeFactory = app.Services.GetService<IServiceScopeFactory>();
-using (var scope = serviceScopeFactory.CreateScope())
+IServiceScopeFactory serviceScopeFactory = app.Services.GetService<IServiceScopeFactory>()!;
+using (var scope = serviceScopeFactory!.CreateScope())
 {
     UserContext? users = scope.ServiceProvider.GetService(typeof(UserContext)) as UserContext;
     User u = new User()
@@ -62,12 +81,8 @@ using (var scope = serviceScopeFactory.CreateScope())
         TokenHash = BCrypt.Net.BCrypt.HashPassword(config["AUTH_PW"]),
         DirectoryLocation = config["UPLOAD_DIR"],
         AcceptedFileTypes = ""
-        //Name = "zak",
-        //TokenHash = BCrypt.Net.BCrypt.HashPassword("twat"),
-        //DirectoryLocation = "/upload",
-        //AcceptedFileTypes = ""
     };
-    users.Add(u);
+    users!.Add(u);
     users.SaveChanges();
 }
 

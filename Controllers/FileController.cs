@@ -5,7 +5,7 @@ using CloudDrop.Utils;
 namespace CloudDrop.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class FileController : BaseController
     {
         private readonly ILogger<FileController> _logger;
@@ -18,12 +18,12 @@ namespace CloudDrop.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            User u = UserContext.All()[0];
+            IList<User> users = UserContext.All();
             return Ok(new
             {
                 Status = "OK",
-                AuthEnabled = true,
-                User = u.Name + ":" + u.TokenHash
+                AuthEnabled = users.Count > 0,
+                // User = u.Name + ":" + u.TokenHash
             });
         }
 

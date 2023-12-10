@@ -6,6 +6,7 @@ import SadIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 import { AuthContext } from '../AuthContext';
 import Droppable from "../Components/Droppable";
+import AuthDialog from "../Components/AuthDialog";
 
 export default function Home() {
     const { auth } = useContext(AuthContext);
@@ -23,6 +24,7 @@ export default function Home() {
                 <SadIcon sx={{fontSize: 84, mt: 4}} />
             </Box>): 
             (<Droppable />)}
+            <AuthDialog />
         </Box>
     );
 }

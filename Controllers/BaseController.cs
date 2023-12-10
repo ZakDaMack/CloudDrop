@@ -8,7 +8,7 @@ namespace CloudDrop.Controllers
 {
     public class BaseController : ControllerBase
     {
-        protected UserContext UserContext => HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
+        protected UserContext? UserContext => HttpContext.RequestServices.GetService(typeof(UserContext)) as UserContext;
 
         protected User AuthenticateOrThrow()
         {
@@ -21,7 +21,7 @@ namespace CloudDrop.Controllers
 
         protected User? Authenticate()
         {
-            string authHeader = HttpContext.Request.Headers.Authorization.FirstOrDefault();
+            string? authHeader = HttpContext.Request.Headers.Authorization.FirstOrDefault();
             if (String.IsNullOrEmpty(authHeader)) return null;
 
             string encodedUsernamePassword = authHeader.Substring("Basic ".Length).Trim();
@@ -30,7 +30,7 @@ namespace CloudDrop.Controllers
 
             string username = usernamePassword.Substring(0, seperatorIndex);
             string password = usernamePassword.Substring(seperatorIndex + 1);
-            return UserContext.Attempt(username, password);
+            return UserContext!.Attempt(username, password);
         }
     }
 }

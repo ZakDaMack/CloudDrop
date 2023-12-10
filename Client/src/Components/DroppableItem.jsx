@@ -29,7 +29,7 @@ export default function Droppable(props) {
 
         try
         {
-            const res = await Axios.post('/api/file', data, { 
+            const res = await Axios.post('/file', data, { 
                 onUploadProgress: updateProgress,
                 auth: auth.user
             });

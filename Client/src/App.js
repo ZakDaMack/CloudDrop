@@ -10,27 +10,21 @@ function App() {
     loading: true,
     error: null,
     authEnabled: false,
-    user: {
-      username: "default",
-      password: "password"
-    }
+    user: null
   });
 
   // check auth status on component mount
   useEffect(() => {
-    fetch('/api/file')
+    fetch('/file')
     .then((res) => res.json())
     .then((data) => setAuth({
       ...auth, authEnabled: data.authEnabled, loading: false
     }))
-    .catch((err) => {
-      console.error(err);
-      // setAuth({
-      //   ...auth,
-      //   error: "There was an error reaching the server", 
-      //   loading: false
-      // })
-    })
+    .catch((err) => setAuth({
+      ...auth,
+      error: "There was an error reaching the server", 
+      loading: false
+    }))
   }, []);
 
   return (
