@@ -16,20 +16,28 @@ This allows you to upload from any device, or as part of any recon scripts that 
 
 ## Setting Up
 
-*TODO: Show docker setup command once uploaded to docker, configure github options*
+You can run this app via docker using the below command:
+
+```bash
+docker run -d --name clouddrop -p 80:80 -v local-folder:/upload \ 
+-e AUTH_USER=default -e AUTH_PW=password \
+zakdamack/clouddrop:latest
+```
+
+If you 
 
 ## How to use
 
 ### Web
 
-Navigate to `http://{yoursitehere.com}`. Simply drag and drop your files to upload.
+Navigate to `{http://yoursitehere.com}`. Simply drag and drop your files to upload.
 
 ### API
 
 The file can be sent via curl, if auth is enabled, you can attach the basic authorization header (concatenated username, :, password and encoded using base64)
 
 ```bash
-curl http://{yoursitehere.com} \
+curl {http://yoursitehere.com} \
 -d @path/to/data \
 -H "Authorization: Basic {username:password}
 ```
