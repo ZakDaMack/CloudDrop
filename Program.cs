@@ -43,32 +43,20 @@ if (app.Environment.IsDevelopment())
 //app.UseHttpsRedirection();
 // app.UseAuthorization();
 app.UseRouting();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-              name: "default",
-              pattern: "{controller}/{action=Index}/{id?}");
-});
-// app.MapControllers();
+app.MapControllers();
 
 // prep react app
-app.MapWhen(
-    ctx => !ctx.Request.Path.StartsWithSegments("/api"),
+app.UseStaticFiles();
+app.MapWhen(ctx => !ctx.Request.Path.Value.StartsWith("/api"),
     appBuilder => {
-        app.UseSpa(spa => {        
-            spa.Options.SourcePath = "Client";        
-            if (app.Environment.IsDevelopment())             
+        appBuilder.UseSpaStaticFiles();
+        appBuilder.UseSpa(spa => {              
+            if (app.Environment.IsDevelopment())  {
+                spa.Options.SourcePath = "Client";  
                 spa.UseReactDevelopmentServer(npmScript: "start");
+            }           
         });
-    }
-);
-
-
-
-// app.UseRouting();
-// app.UseEndpoints(endpoints => {
-//     endpoints.MapControllers();
-// });
+    });
 
 // add the user auth
 IServiceScopeFactory serviceScopeFactory = app.Services.GetService<IServiceScopeFactory>()!;

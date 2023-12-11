@@ -5,7 +5,7 @@ using CloudDrop.Utils;
 namespace CloudDrop.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class FileController : BaseController
     {
         private readonly ILogger<FileController> _logger;

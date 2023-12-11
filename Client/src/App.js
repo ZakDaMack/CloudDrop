@@ -15,7 +15,7 @@ function App() {
 
   // check auth status on component mount
   useEffect(() => {
-    fetch('/file')
+    fetch('/api/file')
     .then((res) => res.json())
     .then((data) => setAuth({
       ...auth, authEnabled: data.authEnabled, loading: false
