@@ -2,7 +2,9 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import { ThemeProvider, createTheme, CssBaseline, Container } from '@mui/material';
 import Home from './Pages/Home';
-import { AuthContext } from './AuthContext';
+import { AuthContext } from './AuthContext'
+import { CardAction, Snackbar } from './Components/CustomSnackbar'
+import { SnackbarProvider } from 'notistack';
 
 function App() {
   const defaultTheme = createTheme();
@@ -29,13 +31,15 @@ function App() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <AuthContext.Provider value={{ auth: auth, setAuth: setAuth }}>
-        <Container component="main" maxWidth="lg">
-          <CssBaseline />
-          {/* <p>{JSON.stringify(auth)}</p> */}
-          <Home />
-        </Container>
-      </AuthContext.Provider>
+      <SnackbarProvider maxSnack={3} anchorOrigin={{horizontal: 'right', vertical: 'top'}} Components={{ default: Snackbar }}>
+        <AuthContext.Provider value={{ auth: auth, setAuth: setAuth }}>
+          <Container component="main" maxWidth="lg">
+            <CssBaseline />
+            {/* <p>{JSON.stringify(auth)}</p> */}
+            <Home />
+          </Container>
+        </AuthContext.Provider>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }

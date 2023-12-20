@@ -25,7 +25,9 @@ export default function Droppable() {
       onDrop={handleOnDrop}
       onDragOver={handleOnDragover}
       sx={{
-        display: 'grid',
+        display: 'flex',
+        justifyContent: 'center',
+        flexWrap: 'wrap',
         cursor: 'pointer',
         placeSelf: 'center',
         p: 2, m: 2

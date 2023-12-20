@@ -1,7 +1,8 @@
+import { useEffect, useState, useContext } from "react";
+import { useSnackbar } from 'notistack';
+import Axios from 'axios';
 import { Box, Typography, LinearProgress, IconButton } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-import { useEffect, useState, useContext } from "react";
-import Axios from 'axios';
 import { AuthContext } from "../AuthContext";
 
 const ERROR = "error";
@@ -12,6 +13,7 @@ export default function Droppable(props) {
     const { file, onClose } = props;
 
     const { auth } = useContext(AuthContext);
+    const { enqueueSnackbar } = useSnackbar();
 
     const [ img, setImg ] = useState(null);
     const [ progress, setProgress ] = useState(0);
@@ -39,6 +41,7 @@ export default function Droppable(props) {
         {
             setProgress(100);
             setState(ERROR);
+            enqueueSnackbar(`Failed to upload file. ${err.message}`);
         }
     }
   
@@ -51,7 +54,7 @@ export default function Droppable(props) {
     }
 
     return (
-        <Box className="Droppable__item">
+        <Box className={`Droppable__item ${state === ERROR ? 'Droppable__failed' : ''}`}>
             <Box sx={{ 
                 aspectRatio: '1', 
                 background: 'grey',
