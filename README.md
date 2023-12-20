@@ -34,12 +34,12 @@ Navigate to `{http://yoursitehere.com}`. Simply drag and drop your files to uplo
 
 ### API
 
-The file can be sent via curl, if auth is enabled, you can attach the basic authorization header (concatenated username, :, password and encoded using base64)
+The file can be sent via curl, if auth is enabled, you can attach the user command
 
 ```bash
 curl {http://yoursitehere.com} \
 -d @path/to/data \
--H "Authorization: Basic {username:password}
+-u username:password
 ```
 
 ### SFTP
